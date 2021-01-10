@@ -503,7 +503,7 @@ def project(points, camera_params):
     """Convert 3-D points to 2-D by projecting onto images."""
     points_proj = rotate(points, camera_params[:,:3])
     points_proj += camera_params[:, 3:6]
-    points_proj = -points_proj[:, :2] / points_proj[:, 2, np.newaxis]
+    points_proj = points_proj[:, :2] / points_proj[:, 2, np.newaxis]
 #    points_proj = points_proj[:,:2]
     f = camera_params[:, 6]
     k1 = camera_params[:, 7]
