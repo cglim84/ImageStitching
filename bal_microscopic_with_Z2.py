@@ -577,3 +577,44 @@ def test():
     f1 = fun(res.x, n_cameras, n_points, camera_indices, point_indices, points_2d)
       
     return res, f1
+
+def camera_calib(camera_params, points_3d, camera_indices, point_indices, points_2d):
+    
+    from scipy.spatial import Delaunay
+    import matplotlib.pyplot as plt
+    
+    camera_params[:,7:9] = 0.0
+    
+    c1_indices = np.array([np.where(camera_indices==0)[0]]).reshape((227,))
+    p1_indices = point_indices[c1_indices]
+    zero_indices = np.zeros((227,),dtype=int)
+    points_proj = project(points_3d[p1_indices], camera_params[zero_indices])
+    world1pts = np.append(points_proj, np.array([[0,0],[0,1193],[1193,0],[1193,1193]]),axis=0)
+    tri1 = Delaunay(world1pts)
+    plt.triplot(world1pts[:,0], world1pts[:,1], tri1.simplices), plt.plot(world1pts[:,0], world1pts[:,1], 'o')
+
+    c2_indices = np.array([np.where(camera_indices==1)[0]]).reshape(197,)
+    p2_indices = point_indices[c2_indices]
+    one_indices = np.ones((197,),dtype=int)
+    points_proj = project(points_3d[p2_indices], camera_params[one_indices])
+    world2pts = np.append(points_proj, np.array([[0,0],[0,1193],[1193,0],[1193,1193]]),axis=0)
+    tri2 = Delaunay(world2pts)
+    plt.triplot(world2pts[:,0], world2pts[:,1], tri2.simplices), plt.plot(world2pts[:,0], world2pts[:,1], 'o')
+
+    c4_indices = np.array([np.where(camera_indices==2)[0]]).reshape(230,)
+    p4_indices = point_indices[c4_indices]
+    one_indices = np.ones((230,),dtype=int)
+    points_proj = project(points_3d[p4_indices], camera_params[one_indices*2])
+    world4pts = np.append(points_proj, np.array([[0,0],[0,1193],[1193,0],[1193,1193]]),axis=0)
+    tri4 = Delaunay(world4pts)
+    plt.triplot(world4pts[:,0], world4pts[:,1], tri4.simplices), plt.plot(world4pts[:,0], world4pts[:,1], 'o')
+
+    c5_indices = np.array([np.where(camera_indices==3)[0]]).reshape(200,)
+    p5_indices = point_indices[c5_indices]
+    one_indices = np.ones((200,),dtype=int)
+    points_proj = project(points_3d[p5_indices], camera_params[one_indices*3])
+    world5pts = np.append(points_proj, np.array([[0,0],[0,1193],[1193,0],[1193,1193]]),axis=0)
+    tri5 = Delaunay(world5pts)
+    plt.triplot(world5pts[:,0], world5pts[:,1], tri5.simplices), plt.plot(world5pts[:,0], world5pts[:,1], 'o')
+
+    return    
